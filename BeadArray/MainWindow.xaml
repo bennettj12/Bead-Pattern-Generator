@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BeadArray"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Bead Array Generator" Height="450" Width="800">
+	<Grid>
+		<TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="10"  >
+			<TabItem Header="TabItem">
+				<Grid Background="#FFE5E5E5"/>
+			</TabItem>
+			<TabItem Header="Palettes">
+				<Grid Background="#FFE5E5E5"/>
+			</TabItem>
+		</TabControl>
+
+	</Grid>
 </Window>

@@ -18,11 +18,26 @@ namespace BeadArray
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
+    
+
     public partial class MainWindow : Window
     {
+        List<List<Color>> palettes = new List<List<Color>>();
         public MainWindow()
         {
+            loadPalettes();
             InitializeComponent();
+        }
+
+        private void savePalettes()
+        {
+
+        }
+        private void loadPalettes()
+        {
+
         }
     }
 }
