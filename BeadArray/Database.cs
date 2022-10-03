@@ -20,7 +20,7 @@ namespace BeadArray
         {
             if (!string.IsNullOrEmpty(dbPath) && !Directory.Exists(dbPath))
                 Directory.CreateDirectory(dbPath);
-            dbFilePath = dbPath + "\\palettes.db";
+            dbFilePath = dbPath + "\\beadarray.db";
             if(!File.Exists(dbFilePath))
             {
                 SQLiteConnection.CreateFile(dbFilePath);
@@ -57,6 +57,13 @@ namespace BeadArray
         public void removePalette(string name)
         {
             executeQuery("DELETE FROM PALETTES WHERE palette_name = '" + name + "'");
+        }
+        public SQLiteDataReader readTable()
+        {
+            command.CommandText = "SELECT * FROM PALETTES";
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            return reader;
         }
 
         public bool checkIfExist(string tableName)

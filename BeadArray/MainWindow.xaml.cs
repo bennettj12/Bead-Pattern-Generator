@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +26,15 @@ namespace BeadArray
 
     public partial class MainWindow : Window
     {
-        List<List<Color>> palettes = new List<List<Color>>();
+        List<Tuple<string, List<string>>> palettes = new List<Tuple<string, List<string>>>();
+        Database db = new Database();
         public MainWindow()
         {
+            // setup db
+            db.createDbFile();
+            Debug.WriteLine(db.createDbConnection());
+            db.createTables();
+
             loadPalettes();
             InitializeComponent();
         }
@@ -37,7 +45,24 @@ namespace BeadArray
         }
         private void loadPalettes()
         {
+            SQLiteDataReader reader = db.readTable();
+            while (reader.Read())
+            {
+                string name = reader.GetString(0);
+                string colors = reader.GetString(1);
+                Tuple<string, List<string>> palette = new Tuple<string, List<string>>(name, new List<string>());
+                foreach (string s in colors.Split(','))
+                {
+                    palette.Item2.Add(s);
+                }
+                palettes.Add(palette);
+            }
+        }
 
+        private void ClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            string text = "#" + ClrPcker_Background.SelectedColor.ToString();
+            Debug.WriteLine(text);
         }
     }
 }

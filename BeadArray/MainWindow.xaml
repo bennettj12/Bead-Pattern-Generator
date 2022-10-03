@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:BeadArray"
         mc:Ignorable="d"
         Title="Bead Array Generator" Height="450" Width="800">
@@ -12,7 +13,30 @@
 				<Grid Background="#FFE5E5E5"/>
 			</TabItem>
 			<TabItem Header="Palettes">
-				<Grid Background="#FFE5E5E5"/>
+				<Grid Background="#FFE5E5E5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<StackPanel Name="PalettesList" Margin="5" Background="#FFE5E5E5">
+						<Label Content="Palettes"/>
+						<Separator Height="5"/>
+					</StackPanel>
+
+					<xctk:ColorPicker Grid.Column="2" Height="50" VerticalAlignment="Top" DisplayColorAndName="True" Name="ClrPcker_Background" Margin="5" SelectedColorChanged="ClrPcker_Background_SelectedColorChanged"></xctk:ColorPicker>
+					<Button Content="Add Selected Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,245,0,0" VerticalAlignment="Top" />
+					<Button Content="New Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,311,0,0" VerticalAlignment="Top" />
+					<Button Content="Delete Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,278,0,0" VerticalAlignment="Top" />
+					<ListView Name="PaletteDisplay" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+						<ListView.View>
+							<GridView>
+								<GridViewColumn/>
+							</GridView>
+						</ListView.View>
+					</ListView>
+
+				</Grid>
 			</TabItem>
 		</TabControl>
 
