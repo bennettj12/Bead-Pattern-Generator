@@ -20,14 +20,12 @@
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 					<StackPanel Name="PalettesList" Margin="5" Background="#FFE5E5E5">
-						<Label Content="Palettes"/>
-						<Separator Height="5"/>
 					</StackPanel>
 
 					<xctk:ColorPicker Grid.Column="2" Height="50" VerticalAlignment="Top" DisplayColorAndName="True" Name="ClrPcker_Background" Margin="5" SelectedColorChanged="ClrPcker_Background_SelectedColorChanged"></xctk:ColorPicker>
-					<Button Content="Add Selected Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,245,0,0" VerticalAlignment="Top" />
-					<Button Content="New Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,311,0,0" VerticalAlignment="Top" />
-					<Button Content="Delete Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,278,0,0" VerticalAlignment="Top" />
+					<Button Content="Add Selected Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,43" VerticalAlignment="Bottom" />
+					<Button Content="New Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,76" VerticalAlignment="Bottom" Click="NewColorPalette" />
+					<Button Content="Delete Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,10" VerticalAlignment="Bottom" />
 					<ListView Name="PaletteDisplay" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
 						<ListView.View>
 							<GridView>
