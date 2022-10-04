@@ -47,11 +47,8 @@ namespace BeadArray
         }
         public bool addPalette(string name, string palette)
         {
-            command.CommandText = "SELECT * FROM PALETTES WHERE palette_name=' " + name + "'";
-            var result = command.ExecuteScalar();
-            if (result == null)
-                return false;
-            executeQuery("INSERT INTO PALETTES (palette_name,palette_colors) VALUES('" + name + "','" + palette + "')");
+            //insert new if not existing or ignore, later update palette
+            executeQuery("INSERT OR REPLACE INTO PALETTES (palette_name,palette_colors) VALUES ('" + name + "','" + palette + "')");
             return true;
         }
         public void removePalette(string name)

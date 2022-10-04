@@ -22,7 +22,7 @@ namespace BeadArray
     /// </summary>
     /// 
 
-    
+
 
     public partial class MainWindow : Window
     {
@@ -39,12 +39,18 @@ namespace BeadArray
             InitializeComponent();
 
             loadPalettes();
+            clearPaletteView();
             refreshPaletteNames();
         }
 
         private void savePalettes()
         {
-
+            foreach(var palette in palettes)
+            {
+                string name = palette.Item1;
+                string colors = String.Join(",", palette.Item2);
+                db.addPalette(name, colors);
+            }
         }
         private void loadPalettes()
         {
@@ -73,10 +79,18 @@ namespace BeadArray
             var dialog = new NamePopup();
             if (dialog.ShowDialog() == true)
             {
-                
+                foreach(var palette in palettes)
+                {
+                    if(palette.Item1 == dialog.ResponseText)
+                    {
+                        MessageBox.Show("Palette with this name already exists", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
                 palettes.Add(new Tuple<string, List<string>>(dialog.ResponseText, new List<string>()));
                 //MessageBox.Show("Palette created: " + dialog.ResponseText + "PaletteCount: " + palettes.Count());
                 refreshPaletteNames();
+                savePalettes();
             }
 
 
@@ -92,8 +106,8 @@ namespace BeadArray
             title.Text = "Palettes ";
             PalettesList.Children.Add(title);
             PalettesList.Children.Add(new Separator());
-            
-            foreach(var palette in palettes)
+
+            foreach (var palette in palettes)
             {
                 var palEntry = new TextBlock();
                 palEntry.MouseEnter += new MouseEventHandler(PaletteName_Enter);
@@ -104,9 +118,9 @@ namespace BeadArray
                 PalettesList.Children.Add(palEntry);
                 paletteEntries.Add(palEntry);
             }
-            
-            
-            
+
+
+
         }
 
         private void PaletteName_Enter(object sender, MouseEventArgs e)
@@ -126,7 +140,7 @@ namespace BeadArray
             var name = ((TextBlock)e.Source).Name;
             //names are formatted as pal_{id}
             selectedPalette = Int32.Parse(name.Split('_')[1]);
-
+            populatePaletteView();
             //reset coloring
             foreach (var pal in paletteEntries)
             {
@@ -137,7 +151,7 @@ namespace BeadArray
             ((TextBlock)e.Source).Background = Brushes.Gray;
             ((TextBlock)e.Source).Foreground = Brushes.White;
 
-            
+
 
 
 
@@ -145,6 +159,82 @@ namespace BeadArray
 
 
 
+        }
+        private void populatePaletteView()
+        {
+            var paletteToView = palettes[selectedPalette];
+            PaletteViewTitle.Text = paletteToView.Item1;
+            PaletteDisplay.Items.Clear();
+            foreach (string color in paletteToView.Item2)
+            {
+                if(color != "")
+                {
+                    ListViewItem item = new ListViewItem();
+                    item.Content = color;
+                    item.Background = (Brush)new BrushConverter().ConvertFromString(color);
+                    PaletteDisplay.Items.Add(item);
+                }
+            }
+        }
+        private void clearPaletteView()
+        {
+            selectedPalette = -1;
+            PaletteViewTitle.Text = "Select a Palette";
+            PaletteDisplay.Items.Clear();
+        }
+        private void AddColor(object sender, RoutedEventArgs e)
+        {
+            if (selectedPalette >= 0)
+            {
+                var selectedColor = ClrPcker_Background.SelectedColor;
+                if (palettes[selectedPalette].Item2.Contains(selectedColor.ToString())) {
+                    MessageBox.Show("Color already in palette", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (selectedColor != null)
+                {
+                    palettes[selectedPalette].Item2.Add(selectedColor.ToString());
+                    populatePaletteView();
+                    savePalettes();
+                }
+                else
+                    MessageBox.Show("No color selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            } else
+            {
+                MessageBox.Show("No palette selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void DeleteColor(object sender, RoutedEventArgs e)
+        {
+            if(PaletteDisplay.SelectedItem != null)
+            {
+               
+                palettes[selectedPalette].Item2.Remove(((ListViewItem)PaletteDisplay.SelectedItem).Content.ToString());
+                populatePaletteView();
+                savePalettes();
+                
+            } else
+            {
+                MessageBox.Show("No color selected", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        private void DeletePalette(object sender, RoutedEventArgs e)
+        {
+            if(selectedPalette < 0)
+            {
+                MessageBox.Show("No palette selected to delete", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            } 
+
+            if(MessageBox.Show("Are you sure you want to delete " + palettes[selectedPalette].Item1 + "?","Confirm deletion",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                db.removePalette(palettes[selectedPalette].Item1);
+                palettes.RemoveAt(selectedPalette);
+                clearPaletteView();
+                refreshPaletteNames();
+            }
         }
     }
 }

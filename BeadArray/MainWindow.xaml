@@ -6,7 +6,7 @@
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:BeadArray"
         mc:Ignorable="d"
-        Title="Bead Array Generator" Height="450" Width="800">
+        Title="Bead Array Generator" Height="550" Width="1100">
 	<Grid>
 		<TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="10"  >
 			<TabItem Header="TabItem">
@@ -23,10 +23,12 @@
 					</StackPanel>
 
 					<xctk:ColorPicker Grid.Column="2" Height="50" VerticalAlignment="Top" DisplayColorAndName="True" Name="ClrPcker_Background" Margin="5" SelectedColorChanged="ClrPcker_Background_SelectedColorChanged"></xctk:ColorPicker>
-					<Button Content="Add Selected Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,43" VerticalAlignment="Bottom" />
-					<Button Content="New Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,76" VerticalAlignment="Bottom" Click="NewColorPalette" />
-					<Button Content="Delete Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,10" VerticalAlignment="Bottom" />
-					<ListView Name="PaletteDisplay" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+                    <Button Content="Add Selected Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,76" VerticalAlignment="Bottom" Click="AddColor" />
+					<Button Content="New Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,109" VerticalAlignment="Bottom" Click="NewColorPalette" />
+                    <Button Content="Delete Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,43" VerticalAlignment="Bottom" Click="DeleteColor"/>
+                    <Button Content="Delete Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,10" VerticalAlignment="Bottom" Click="DeletePalette" />
+                    <TextBlock Name="PaletteViewTitle" Text="Palette" HorizontalAlignment="Stretch" Grid.Column="1" Margin="5"/>
+                    <ListView Name="PaletteDisplay" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 35 5 5">
 						<ListView.View>
 							<GridView>
 								<GridViewColumn/>
