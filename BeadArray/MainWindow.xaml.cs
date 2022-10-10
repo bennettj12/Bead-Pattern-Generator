@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace BeadArray
 {
@@ -234,6 +235,18 @@ namespace BeadArray
                 palettes.RemoveAt(selectedPalette);
                 clearPaletteView();
                 refreshPaletteNames();
+            }
+        }
+
+        private void SelectImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG";
+            if(openFileDialog.ShowDialog() == true)
+            {
+                PathDisplay.Text = openFileDialog.FileName;
+                ImageDisplay.Source = (ImageSource) new ImageSourceConverter().ConvertFromString(openFileDialog.FileName);
+                ImageLoadedLabel.Content = openFileDialog.FileName;
             }
         }
     }

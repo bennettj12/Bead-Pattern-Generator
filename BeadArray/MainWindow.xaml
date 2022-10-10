@@ -4,41 +4,64 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:local="clr-namespace:BeadArray"
         mc:Ignorable="d"
-        Title="Bead Array Generator" Height="550" Width="1100">
-	<Grid>
-		<TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="10"  >
-			<TabItem Header="TabItem">
-				<Grid Background="#FFE5E5E5"/>
-			</TabItem>
-			<TabItem Header="Palettes">
-				<Grid Background="#FFE5E5E5">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="2*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<StackPanel Name="PalettesList" Margin="5" Background="#FFE5E5E5">
-					</StackPanel>
+        Title="Bead Array Generator" Height="550" Width="1100" MinWidth="1100">
+    <Grid>
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="10"  >
+            <TabItem Header="Create Pattern">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Import an image:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="8,10,0,10"/>
+                    <TextBox x:Name="PathDisplay" Text="Path..." Margin="0,14,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="140" Grid.Column="0" />
+                    <Button x:Name="SelectImage" Content="Browse..." HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,40,10,0" Click="SelectImage_Click"/>
 
-					<xctk:ColorPicker Grid.Column="2" Height="50" VerticalAlignment="Top" DisplayColorAndName="True" Name="ClrPcker_Background" Margin="5" SelectedColorChanged="ClrPcker_Background_SelectedColorChanged"></xctk:ColorPicker>
+                    <Label Margin="8 62 0 10" VerticalAlignment="Top" Content="Pattern output size:"/>
+                    <Separator HorizontalAlignment="Stretch" Height="1" Margin="10 86 10 10" VerticalAlignment="Top"/>
+
+                    <Label Margin="8 90 0 10" VerticalAlignment="Top" Content="Width:"/>
+                    <TextBox x:Name="PatWidth" Text="100" Margin="10 94 10 10" VerticalAlignment="Top" HorizontalAlignment="Right" Width="140"/>
+
+                    <Label Margin="8 115 0 10" VerticalAlignment="Top" Content="Height:"/>
+                    <TextBox x:Name="PatHeight" Text="100" Margin="10 119 10 10" VerticalAlignment="Top" HorizontalAlignment="Right" Width="140"/>
+
+
+
+                    <Label Content="Label" x:Name="ImageLoadedLabel" Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,-0.115" Width="780"/>
+                    <Image x:Name="ImageDisplay" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Top"/>
+                
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Palettes">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Name="PalettesList" Margin="5" Background="#FFE5E5E5">
+                    </StackPanel>
+
+                    <xctk:ColorPicker Grid.Column="2" Height="50" VerticalAlignment="Top" DisplayColorAndName="True" Name="ClrPcker_Background" Margin="5" SelectedColorChanged="ClrPcker_Background_SelectedColorChanged"></xctk:ColorPicker>
                     <Button Content="Add Selected Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,76" VerticalAlignment="Bottom" Click="AddColor" />
-					<Button Content="New Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,109" VerticalAlignment="Bottom" Click="NewColorPalette" />
+                    <Button Content="New Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,109" VerticalAlignment="Bottom" Click="NewColorPalette" />
                     <Button Content="Delete Color" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,43" VerticalAlignment="Bottom" Click="DeleteColor"/>
                     <Button Content="Delete Palette" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,0,0,10" VerticalAlignment="Bottom" Click="DeletePalette" />
                     <TextBlock Name="PaletteViewTitle" Text="Palette" HorizontalAlignment="Stretch" Grid.Column="1" Margin="5"/>
                     <ListView Name="PaletteDisplay" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 35 5 5">
-						<ListView.View>
-							<GridView>
-								<GridViewColumn/>
-							</GridView>
-						</ListView.View>
-					</ListView>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
 
-				</Grid>
-			</TabItem>
-		</TabControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
-	</Grid>
+    </Grid>
 </Window>
