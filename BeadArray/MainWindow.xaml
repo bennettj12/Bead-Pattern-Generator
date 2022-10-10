@@ -31,7 +31,10 @@
 
                     <Label Content="Label" x:Name="ImageLoadedLabel" Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,-0.115" Width="780"/>
                     <Image x:Name="ImageDisplay" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Top"/>
-                
+
+
+                    <Button x:Name="ProcessImage" Content="Process Image" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,10" Click="ProcessImage_Click"/>
+
 
                 </Grid>
             </TabItem>
