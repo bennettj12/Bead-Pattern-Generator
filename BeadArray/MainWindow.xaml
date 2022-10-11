@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Bead Array Generator" Height="550" Width="1100" MinWidth="1100">
+        Title="Bead Array Generator" Height="700" Width="1400" MinWidth="1100" MinHeight="400">
     <Grid>
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="10"  >
             <TabItem Header="Create Pattern">
@@ -27,11 +27,15 @@
                     <Label Margin="8 115 0 10" VerticalAlignment="Top" Content="Height:"/>
                     <TextBox x:Name="PatHeight" Text="100" Margin="10 119 10 10" VerticalAlignment="Top" HorizontalAlignment="Right" Width="140"/>
 
+                    <Separator HorizontalAlignment="Stretch" Height="1" Margin="10 142 10 10" VerticalAlignment="Top"/>
+                    <Label Margin="8 145 0 10" VerticalAlignment="Top" Content="Select Palette:"/>
+                    <ComboBox x:Name="PaletteDropDown" HorizontalAlignment="Stretch" Margin="10,170,10,10" VerticalAlignment="Top"/>
 
 
                     <Label Content="Label" x:Name="ImageLoadedLabel" Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,-0.115" Width="780"/>
-                    <Image x:Name="ImageDisplay" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Top"/>
+                    <Image RenderOptions.BitmapScalingMode="NearestNeighbor" x:Name="ImageDisplay" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Top"/>
 
+                    
 
                     <Button x:Name="ProcessImage" Content="Process Image" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,10" Click="ProcessImage_Click"/>
 

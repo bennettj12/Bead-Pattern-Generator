@@ -36,10 +36,15 @@ namespace BeadArray
             InitializeComponent();
 
             loadPalettes();
+            refreshPaletteDropDown();
             clearPaletteView();
             refreshPaletteNames();
         }
 
+        private List<string> getPalette(string name)
+        {
+            return palettes.Find(pal => pal.Item1 == name).Item2;
+        }
         private void savePalettes()
         {
             foreach(var palette in palettes)
@@ -64,7 +69,14 @@ namespace BeadArray
                 palettes.Add(palette);
             }
         }
-
+        private void refreshPaletteDropDown()
+        {
+            PaletteDropDown.Items.Clear();
+            foreach(Tuple<string, List<string>> p in palettes)
+            {
+                PaletteDropDown.Items.Add(new ComboBoxItem().Content = p.Item1);
+            }
+        }
         private void ClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             string text = "#" + ClrPcker_Background.SelectedColor.ToString();
@@ -87,6 +99,7 @@ namespace BeadArray
                 palettes.Add(new Tuple<string, List<string>>(dialog.ResponseText, new List<string>()));
                 //MessageBox.Show("Palette created: " + dialog.ResponseText + "PaletteCount: " + palettes.Count());
                 refreshPaletteNames();
+                refreshPaletteDropDown();
                 savePalettes();
             }
 
@@ -231,6 +244,7 @@ namespace BeadArray
                 palettes.RemoveAt(selectedPalette);
                 clearPaletteView();
                 refreshPaletteNames();
+                refreshPaletteDropDown();
             }
         }
 
@@ -245,15 +259,60 @@ namespace BeadArray
                 ImageLoadedLabel.Content = openFileDialog.FileName;
             }
         }
+        private Color findClosestColor(Color cRef, List<Color> palette)
+        {
+            Color closest = new Color();
+            double bestDiff = -1;
+            double cRefMagnitude = (Math.Pow(cRef.R, 2) + Math.Pow(cRef.G,2) + Math.Pow(cRef.B,2));
+            
+            foreach(Color c in palette)
+            {
+                double cMagnitude = (Math.Pow(c.R, 2) + Math.Pow(c.G, 2) + Math.Pow(c.B, 2));
+                double diff = Math.Abs(cRefMagnitude - cMagnitude);
+                if(bestDiff == -1 || diff < bestDiff)
+                {
+                    closest = c;
+                    bestDiff = diff;
+                }
+            }
 
+            return closest;
+        }
         private void ProcessImage_Click(object sender, RoutedEventArgs e)
         {
             int height = int.Parse(PatHeight.Text);
             int width = int.Parse(PatWidth.Text);
+
+            // get colors and convert to color format
+            List<Color> sp = new List<Color>();
+            foreach(string s in getPalette(PaletteDropDown.Text))
+            {
+                sp.Add((Color) ColorConverter.ConvertFromString(s));
+            }
+
             Mat mat = CvInvoke.Imread(PathDisplay.Text, ImreadModes.AnyColor);
 
             Image<Bgr, Byte> img = mat.ToImage<Bgr, Byte>();
-            img = img.Resize(height, width, Inter.Linear);
+            img = img.Resize(width, height, Inter.Lanczos4);
+            // [x,y,0 (blue)] [x,y,1 (green)] [x,y,2 (red)] 
+            //MessageBox.Show("Top Left Color Info: " + img.Data[0,0,0] + " : " + img.Data[0, 0, 1] + " : " + img.Data[0, 0, 2]);
+
+
+            for (int y = 0; y < width; y++)
+            {
+                for (int x = 0; x < height; x++)
+                {
+                    byte blue = img.Data[x, y, 0];
+                    byte green = img.Data[x, y, 1];
+                    byte red = img.Data[x, y, 2];
+                    Color pixelColor = Color.FromRgb(red, green, blue);
+                    Color matchedColor = findClosestColor(pixelColor, sp);
+                    img.Data[x, y, 0] = matchedColor.B;
+                    img.Data[x, y, 1] = matchedColor.G;
+                    img.Data[x, y, 2] = matchedColor.R;
+
+                }
+            }
 
             string tFileName = System.IO.Path.GetTempFileName() + ".png";
             img.Save(tFileName);
