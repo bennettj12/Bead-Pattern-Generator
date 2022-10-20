@@ -22,23 +22,23 @@
                     <Separator HorizontalAlignment="Stretch" Height="1" Margin="10 86 10 10" VerticalAlignment="Top"/>
 
                     <Label Margin="8 90 0 10" VerticalAlignment="Top" Content="Width:"/>
-                    <TextBox x:Name="PatWidth" Text="100" Margin="10 94 10 10" VerticalAlignment="Top" HorizontalAlignment="Right" Width="140"/>
+                    <TextBox x:Name="PatWidth" Text="100" Margin="10 94 10 10" VerticalAlignment="Top" HorizontalAlignment="Right" Width="140" GotFocus="PatWidth_GotFocus"/>
 
                     <Label Margin="8 115 0 10" VerticalAlignment="Top" Content="Height:"/>
-                    <TextBox x:Name="PatHeight" Text="100" Margin="10 119 10 10" VerticalAlignment="Top" HorizontalAlignment="Right" Width="140"/>
+                    <TextBox x:Name="PatHeight" Text="100" Margin="10 119 10 10" VerticalAlignment="Top" HorizontalAlignment="Right" Width="140" GotFocus="PatHeight_GotFocus"/>
 
                     <Separator HorizontalAlignment="Stretch" Height="1" Margin="10 142 10 10" VerticalAlignment="Top"/>
                     <Label Margin="8 145 0 10" VerticalAlignment="Top" Content="Select Palette:"/>
                     <ComboBox x:Name="PaletteDropDown" HorizontalAlignment="Stretch" Margin="10,170,10,10" VerticalAlignment="Top"/>
 
 
-                    <Label Content="Label" x:Name="ImageLoadedLabel" Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,-0.115" Width="780"/>
+                    <Label Content="" x:Name="ImageLoadedLabel" Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.526,-0.115" Width="780"/>
                     <Image RenderOptions.BitmapScalingMode="NearestNeighbor" x:Name="ImageDisplay" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Top"/>
 
                     
 
-                    <Button x:Name="ProcessImage" Content="Process Image" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,10" Click="ProcessImage_Click"/>
-
+                    <Button x:Name="ProcessImage" Content="Preview Grid" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,40" Click="ProcessImage_Click"/>
+                    <Button x:Name="Export" Content="Export" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,10" Click="Export_Click"/>
 
                 </Grid>
             </TabItem>

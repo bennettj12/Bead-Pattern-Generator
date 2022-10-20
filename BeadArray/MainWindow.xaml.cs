@@ -27,6 +27,10 @@ namespace BeadArray
         List<TextBlock> paletteEntries = new List<TextBlock>();
         Database db = new Database();
         int selectedPalette = -1;
+        string workingFilePath = "";
+
+        static int CELL_SIZE = 25;
+
         public MainWindow()
         {
             // setup db
@@ -278,16 +282,129 @@ namespace BeadArray
 
             return closest;
         }
+        private void Export_Click(object sender, RoutedEventArgs e)
+        {
+            // export to file
+            ProcessImage_Click(sender, e);
+            Mat original = CvInvoke.Imread(workingFilePath, ImreadModes.AnyColor);
+            Image<Bgr, Byte> originalImage = original.ToImage<Bgr, Byte>();
+
+            int width = originalImage.Width;
+            int height = originalImage.Height;
+
+            Image<Bgr, Byte> outputImage = new Image<Bgr, Byte>(width * CELL_SIZE, height * CELL_SIZE, new Bgr(255, 0 , 0));
+
+            List<Color> sp = new List<Color>();
+            foreach (string s in getPalette(PaletteDropDown.Text))
+            {
+                sp.Add((Color)ColorConverter.ConvertFromString(s));
+            }
+
+            for (int y = 0; y < width; y++)
+            {
+                for(int x = 0; x < height; x++)
+                {
+                    //originalImage Pixels
+                    Bgr col = originalImage[x, y];
+                    Bgr black = new Bgr(0,0,0);
+
+                    for(int i = y * CELL_SIZE; i < y* CELL_SIZE + CELL_SIZE; i++)
+                    {
+                        for(int j = x * CELL_SIZE; j < x * CELL_SIZE + CELL_SIZE; j++)
+                        {
+                            if(
+                                j == x * CELL_SIZE || 
+                                j == x * CELL_SIZE + CELL_SIZE ||
+                                i == y * CELL_SIZE ||
+                                i == y * CELL_SIZE + CELL_SIZE
+                            )
+                            {
+                                outputImage[j, i] = black;
+                            } else
+                            {
+                                outputImage[j, i] = col;
+                            }
+                            
+                        }
+                    }
+                    for(int i = 0; i < sp.Count; i++)
+                    {
+                        Color c = sp[i];
+                        Bgr thiscol = new Bgr(c.B, c.G, c.R);
+                        if (col.Equals(thiscol))
+                        {
+                            outputImage.Draw(((char)(65 + i)).ToString(), new System.Drawing.Point(y * CELL_SIZE + 1, x * CELL_SIZE + CELL_SIZE), FontFace.HersheyPlain, CELL_SIZE/10, black, 1, LineType.AntiAlias, false);
+                        }
+
+                    }
+                    //outputImage.Draw("A", new System.Drawing.Point(y*CELL_SIZE + 1, x*CELL_SIZE + CELL_SIZE), FontFace.HersheyPlain, CELL_SIZE/16, black ,1,LineType.EightConnected,false);
+
+
+                }
+            }
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "PNG Image|*.png";
+            saveFile.Title = "Save Chart";
+            saveFile.ShowDialog();
+
+            if(saveFile.FileName != "")
+            {
+                outputImage.Save(saveFile.FileName);
+            }
+
+            outputImage.Save(workingFilePath.Substring(0,workingFilePath.Length-4) +"final.png");
+            ImageDisplay.Source = (ImageSource)new ImageSourceConverter().ConvertFromString(workingFilePath.Substring(0, workingFilePath.Length - 4) + "final.png");
+            // end processing
+
+
+
+        }
         private void ProcessImage_Click(object sender, RoutedEventArgs e)
         {
-            int height = int.Parse(PatHeight.Text);
-            int width = int.Parse(PatWidth.Text);
+            int height, width;
+
+            if(!int.TryParse(PatHeight.Text, out height) || !int.TryParse(PatWidth.Text, out width))
+            {
+                MessageBox.Show("Please enter a valid number");
+                return;
+            }
+            if(height < 1 || width < 1)
+            {
+                MessageBox.Show("Number must be greater than zero");
+                return;
+            }
 
             // get colors and convert to color format
             List<Color> sp = new List<Color>();
+            if (PaletteDropDown.SelectedItem == null)
+            {
+                MessageBox.Show("You must select a palette first");
+                return;
+            }
             foreach(string s in getPalette(PaletteDropDown.Text))
             {
                 sp.Add((Color) ColorConverter.ConvertFromString(s));
+            }
+            if(PathDisplay.Text == "")
+            {
+                MessageBox.Show("You must select an image to convert first");
+                return;
+            }
+            if (!File.Exists(PathDisplay.Text))
+            {
+                MessageBox.Show("Invalid file");
+                return;
+            }
+            switch (System.IO.Path.GetExtension(PathDisplay.Text).ToLower()) 
+            {
+                case ".gif":
+                case ".png":
+                case ".jpg":
+                case ".jpeg":
+                    break;
+                default:
+                    MessageBox.Show("Invalid file");
+                    return;
             }
 
             Mat mat = CvInvoke.Imread(PathDisplay.Text, ImreadModes.AnyColor);
@@ -316,8 +433,25 @@ namespace BeadArray
 
             string tFileName = System.IO.Path.GetTempFileName() + ".png";
             img.Save(tFileName);
+            workingFilePath = tFileName;
             ImageDisplay.Source = (ImageSource)new ImageSourceConverter().ConvertFromString(tFileName);
             
         }
+
+        private void selectText(object sender)
+        {
+            ((TextBox)sender).SelectAll();
+        }
+        private void PatWidth_GotFocus(object sender, RoutedEventArgs e)
+        {
+            selectText(sender);
+        }
+
+        private void PatHeight_GotFocus(object sender, RoutedEventArgs e)
+        {
+            selectText(sender);
+        }
+
+
     }
 }
