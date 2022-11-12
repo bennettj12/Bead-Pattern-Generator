@@ -129,10 +129,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Emgu.CV">
-      <Version>4.5.5.4823</Version>
+      <Version>4.6.0.5131</Version>
     </PackageReference>
     <PackageReference Include="Emgu.CV.runtime.windows">
-      <Version>4.5.5.4823</Version>
+      <Version>4.6.0.5131</Version>
     </PackageReference>
     <PackageReference Include="Extended.Wpf.Toolkit">
       <Version>4.4.0</Version>

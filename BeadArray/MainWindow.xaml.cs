@@ -267,12 +267,13 @@ namespace BeadArray
         {
             Color closest = new Color();
             double bestDiff = -1;
-            double cRefMagnitude = (Math.Pow(cRef.R, 2) + Math.Pow(cRef.G,2) + Math.Pow(cRef.B,2));
+            
+            //double cRefMagnitude = Math.Sqrt((Math.Pow(cRef.R, 2) + Math.Pow(cRef.G, 2) + Math.Pow(cRef.B, 2)));
             
             foreach(Color c in palette)
             {
-                double cMagnitude = (Math.Pow(c.R, 2) + Math.Pow(c.G, 2) + Math.Pow(c.B, 2));
-                double diff = Math.Abs(cRefMagnitude - cMagnitude);
+                double diff = Math.Sqrt((Math.Pow(c.R - cRef.R, 2) + Math.Pow(c.G - cRef.G, 2) + Math.Pow(c.B - cRef.B, 2)));
+                //double diff = Math.Abs(cRefMagnitude - cMagnitude);
                 if(bestDiff == -1 || diff < bestDiff)
                 {
                     closest = c;
