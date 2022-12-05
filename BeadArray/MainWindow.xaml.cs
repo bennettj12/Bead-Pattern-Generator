@@ -283,6 +283,7 @@ namespace BeadArray
 
             return closest;
         }
+
         private void Export_Click(object sender, RoutedEventArgs e)
         {
             // export to file
@@ -359,6 +360,31 @@ namespace BeadArray
 
 
 
+        }
+        private void Export_CSV_Click(object sender, RoutedEventArgs e)
+        {
+            ProcessImage_Click(sender, e);
+            Mat original = CvInvoke.Imread(workingFilePath, ImreadModes.AnyColor);
+            Image<Bgr, Byte> originalImage = original.ToImage<Bgr, Byte>();
+
+            int width = originalImage.Width;
+            int height = originalImage.Height;
+            var output = new System.Text.StringBuilder();
+            output.AppendLine("sep=;");
+            for (int y = 0; y < width; y++)
+            {
+                for (int x = 0; x < height; x++)
+                {
+                    Bgr col = originalImage[y, x];
+                    output.Append(col.ToString() + ";");
+                }
+                output.AppendLine();
+            }
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "CSV file|*.csv";
+            saveFile.Title = "Save CSV";
+            saveFile.ShowDialog();
+            File.WriteAllText(saveFile.FileName, output.ToString());
         }
         private void ProcessImage_Click(object sender, RoutedEventArgs e)
         {

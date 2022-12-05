@@ -37,7 +37,8 @@
 
                     
 
-                    <Button x:Name="ProcessImage" Content="Preview Grid" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,40" Click="ProcessImage_Click"/>
+                    <Button x:Name="ProcessImage" Content="Preview Grid" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,70" Click="ProcessImage_Click"/>
+                    <Button x:Name="Export_CSV" Content="Export CSV" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,40" Click="Export_CSV_Click"/>
                     <Button x:Name="Export" Content="Export" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,40,10,10" Click="Export_Click"/>
 
                 </Grid>
