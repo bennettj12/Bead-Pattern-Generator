@@ -35,7 +35,7 @@ namespace BeadArray
         {
             // setup db
             db.createDbFile();
-            Debug.WriteLine(db.createDbConnection());
+            //Debug.WriteLine(db.createDbConnection());
             db.createTables();
             InitializeComponent();
 

@@ -13,13 +13,15 @@ namespace BeadArray
         SQLiteConnection dbConnection;
         SQLiteCommand command;
         string sqlCommand;
-        string dbPath = System.Environment.CurrentDirectory + "\\DB";
+        string dbPath = Environment.SpecialFolder.LocalApplicationData + "\\DB";
         string dbFilePath;
 
         public void createDbFile()
         {
             if (!string.IsNullOrEmpty(dbPath) && !Directory.Exists(dbPath))
+            {
                 Directory.CreateDirectory(dbPath);
+            }
             dbFilePath = dbPath + "\\beadarray.db";
             if(!File.Exists(dbFilePath))
             {
@@ -65,6 +67,10 @@ namespace BeadArray
 
         public bool checkIfExist(string tableName)
         {
+            if(command == null)
+            {
+                createDbConnection();
+            }
             command.CommandText = "SELECT name FROM sqlite_master WHERE name='" + tableName + "'";
             var result = command.ExecuteScalar();
 
