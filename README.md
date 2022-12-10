@@ -3,6 +3,8 @@ Generates a bead pattern based on user provided image and color palette.
 
 # How to use
 
+Download the zip file from the releases section, extract and run "BeadArray.exe"
+
 ### Creating a palette
 First, you should create a palette. Generally, it should be made up of the same colors that you have beads for, but you can use any colors.
 
